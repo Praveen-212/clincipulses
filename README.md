@@ -1,8 +1,7 @@
-ClinicPulse – Token Management System
+ClinicPulse is a simple Token Management System built for clinics to manage daily patient queues.
 
-ClinicPulse is a simple Token Management System for a clinic.
-It allows generating daily tokens for patients based on doctors.
-Each doctor has a separate token sequence that resets every day.
+Each doctor has a separate daily token sequence.
+Tokens auto-increment per doctor and reset automatically every day.
 
 🚀 Tech Stack
 
@@ -11,27 +10,20 @@ Backend: Supabase
 
 🌐 Deployed URL
 
-https://clinicpulses.netlify.app/
+Frontend: https://clinicpulses.netlify.app/
 
 📌 Features
 
 Add Doctor
-
 List Doctors
-
 Generate Token
-
 Auto-increment token per doctor per day
-
 Daily token reset
-
 View Active Tokens
-
 View Completed Tokens
-
 Mark Token as Completed
 
-🗄 Database Schema
+📂 Database Schema (JSON)
 
 {
   "database": "clinicpulse",
@@ -111,7 +103,11 @@ Mark Token as Completed
       "constraints": [
         {
           "type": "unique",
-          "columns": ["doctor_id", "token_date", "token_number"]
+          "columns": [
+            "doctor_id",
+            "token_date",
+            "token_number"
+          ]
         }
       ]
     }
@@ -122,30 +118,49 @@ Mark Token as Completed
 
 
 
-⚙️ Installation Steps
+⚙️ Installation & Setup
+
 1️⃣ Clone Repository
+
 git clone https://github.com/your-username/clinicpulse.git
 cd clinicpulse
 
 2️⃣ Install Dependencies
+
 npm install
 
 3️⃣ Setup Environment Variables
 
-Create a .env file:
+Create a .env file in the root folder:
 
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-4️⃣ Run Project
+
+4️⃣ Run the Project'
+
 npm run dev
 
-📄 How It Works
+🔄 How Token Reset Works
 
-Token number is generated per doctor per day
+Token number is generated based on doctor_id and CURRENT_DATE
 
-Token resets automatically when date changes
+If no token exists for that doctor today → starts from 1
 
-Concurrency handled at database level
+Otherwise → increments the last token number
 
-Frontend connects to Supabase using real API calls
+Since date changes at midnight, tokens automatically reset daily
+
+🔒 Concurrency Handling
+
+Token generation handled inside database function
+
+Unique constraint on:
+
+(doctor_id, token_date, token_number)
+
+Prevents duplicate tokens even if two users generate tokens at the same time
+
+📄 License
+
+This project is developed for internship evaluation and learning purposes.
