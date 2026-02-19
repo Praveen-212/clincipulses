@@ -1,73 +1,151 @@
-# Welcome to your Lovable project
+ClinicPulse – Token Management System
 
-## Project info
+ClinicPulse is a simple Token Management System for a clinic.
+It allows generating daily tokens for patients based on doctors.
+Each doctor has a separate token sequence that resets every day.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+🚀 Tech Stack
 
-## How can I edit this code?
+Frontend: React (TypeScript, CSS)
+Backend: Supabase
 
-There are several ways of editing your application.
+🌐 Deployed URL
 
-**Use Lovable**
+https://clinicpulses.netlify.app/
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+📌 Features
 
-Changes made via Lovable will be committed automatically to this repo.
+Add Doctor
 
-**Use your preferred IDE**
+List Doctors
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Generate Token
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Auto-increment token per doctor per day
 
-Follow these steps:
+Daily token reset
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+View Active Tokens
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+View Completed Tokens
 
-# Step 3: Install the necessary dependencies.
-npm i
+Mark Token as Completed
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+🗄 Database Schema
+
+{
+  "database": "clinicpulse",
+  "tables": [
+    {
+      "table_name": "doctors",
+      "columns": [
+        {
+          "name": "doctor_id",
+          "type": "uuid",
+          "primary_key": true
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "specialization",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "default": "now()"
+        }
+      ]
+    },
+    {
+      "table_name": "tokens",
+      "columns": [
+        {
+          "name": "token_id",
+          "type": "uuid",
+          "primary_key": true
+        },
+        {
+          "name": "doctor_id",
+          "type": "uuid",
+          "foreign_key": {
+            "references": "doctors.doctor_id",
+            "on_delete": "cascade"
+          }
+        },
+        {
+          "name": "patient_name",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "patient_phone",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "token_number",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "token_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "default": "active"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "default": "now()"
+        }
+      ],
+      "constraints": [
+        {
+          "type": "unique",
+          "columns": ["doctor_id", "token_date", "token_number"]
+        }
+      ]
+    }
+  ]
+}
+
+
+
+
+
+⚙️ Installation Steps
+1️⃣ Clone Repository
+git clone https://github.com/your-username/clinicpulse.git
+cd clinicpulse
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Setup Environment Variables
+
+Create a .env file:
+
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+4️⃣ Run Project
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+📄 How It Works
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Token number is generated per doctor per day
 
-**Use GitHub Codespaces**
+Token resets automatically when date changes
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Concurrency handled at database level
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Frontend connects to Supabase using real API calls
