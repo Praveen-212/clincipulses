@@ -15,13 +15,21 @@ Frontend: https://clinicpulses.netlify.app/
 📌 Features
 
 Add Doctor
+
 List Doctors
+
 Generate Token
+
 Auto-increment token per doctor per day
+
 Daily token reset
+
 View Active Tokens
+
 View Completed Tokens
+
 Mark Token as Completed
+
 
 📂 Database Schema (JSON)
 
@@ -122,7 +130,8 @@ Mark Token as Completed
 
 1️⃣ Clone Repository
 
-git clone https://github.com/your-username/clinicpulse.git
+git clone https://github.com/Praveen-212/clincipulses.git
+
 cd clinicpulse
 
 2️⃣ Install Dependencies
@@ -134,6 +143,7 @@ npm install
 Create a .env file in the root folder:
 
 VITE_SUPABASE_URL=your_supabase_url
+
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 
